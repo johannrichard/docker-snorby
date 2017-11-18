@@ -1,5 +1,5 @@
 FROM centos:centos7
-MAINTAINER schachr <schachr@github.com>
+MAINTAINER johannrichard <johannrichard@github.com>
 
 RUN \
     yum update -y && \
@@ -15,14 +15,6 @@ RUN \
     export PATH=$PATH:/usr/local/rvm/rubies/ruby-1.9.3-p551/bin && \
     gem update --system && \
     gem install bundler && \
-    # Install DAQ and Snort
-    yum install -y https://snort.org/downloads/snort/daq-2.0.6-1.centos7.x86_64.rpm && \
-    yum install -y https://snort.org/downloads/snort/snort-2.9.11-1.centos7.x86_64.rpm && \
-    # Install Community rules
-    wget -O /tmp/community-rules.tar.gz https://www.snort.org/downloads/community/community-rules.tar.gz && \
-    mkdir -p /etc/snort/rules && \
-    tar zxvf /tmp/community-rules.tar.gz -C /etc/snort/rules --strip-components=1 && \
-    rm -f /tmp/community-rules.tar.gz && \
     # Install Snorby
     source /usr/local/rvm/scripts/rvm && \
     source /etc/profile.d/rvm.sh && \
@@ -37,6 +29,6 @@ RUN \
 
 COPY container-files /
 
-ENV DB_ADDRESS=127.0.0.1 DB_USER=user DB_PASS=password SNORBY_CONFIG=/usr/local/src/snorby/config/snorby_config.yml OINKCODE=community
+ENV DB_ADDRESS=127.0.0.1 DB_USER=user DB_PASS=password SNORBY_CONFIG=/usr/local/src/snorby/config/snorby_config.yml
 
 ENTRYPOINT ["/bootstrap.sh"]
